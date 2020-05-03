@@ -1,0 +1,2 @@
+https://data.ny.gov/api/views/e8ky-4vqe/rows.csv?accessType=DOWNLOAD&sorting=true
+https://data.ny.gov/api/views/6amx-2pbv/rows.csv?accessType=DOWNLOAD&sorting=true
