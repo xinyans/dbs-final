@@ -1,19 +1,12 @@
 DROP SCHEMA IF EXISTS project_data CASCADE;
 CREATE SCHEMA project_data;
-ALTER ROLE dbms_project_user SET search_path TO project_data, public;
 
-CREATE TABLE Location
+CREATE TABLE Location_volume
 (
     year    Integer,
     municipality    VARCHAR(127),
-    station_ID  Integer,
     county VARCHAR(127),
     Volume_count Integer,
-    road_name VARCHAR(255),
-    PRIMARY KEY(road_name,station_ID,year)
-);
-CREATE TABLE Road_info
-(
     road_name VARCHAR(255),
     station_ID Integer,
     signing VARCHAR(127),
@@ -25,7 +18,7 @@ CREATE TABLE Road_info
     bridge VARCHAR(1),
     railroad_crossing VARCHAR(1),
     one_way VARCHAR(1),
-    PRIMARY KEY(road_name,station_ID)
+    PRIMARY KEY(year,road_name,station_ID)
 );
 CREATE TABLE Car_crash
 (
