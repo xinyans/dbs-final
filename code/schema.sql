@@ -7,6 +7,8 @@ CREATE TABLE Location_volume
     municipality    VARCHAR(127),
     county VARCHAR(127),
     Volume_count Integer,
+    state_route VARCHAR(127),
+    county_road VARCHAR(127),
     road_name VARCHAR(255),
     station_ID Integer,
     signing VARCHAR(127),
@@ -18,7 +20,7 @@ CREATE TABLE Location_volume
     bridge VARCHAR(1),
     railroad_crossing VARCHAR(1),
     one_way VARCHAR(1),
-    PRIMARY KEY(year,road_name,station_ID)
+    PRIMARY KEY(road_name,station_ID,year)
 );
 CREATE TABLE Car_crash
 (
