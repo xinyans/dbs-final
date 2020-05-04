@@ -5,7 +5,8 @@ class Vehicles_data:
         self.conn = psycopg2.connect(connection_string)
     def __init__(self,volume):
     	cursor = self.conn.cursor
-    	query = "SELECT municipality,year FROM Location_volume WHERE sum(count)>=%d group by municipality"
+    	query = "SELECT municipality,year FROM Location_volume WHERE sum(count)>=%d \
+    	group by municipality,year"
     	cursor.execute(query,(volume,))
     	records=cursor.fetchall()
     	return records
