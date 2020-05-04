@@ -1,25 +1,49 @@
 DROP SCHEMA IF EXISTS project_data CASCADE;
 CREATE SCHEMA project_data;
 
-CREATE TABLE Location_volume
+CREATE TABLE Location_volume_temp
 (
     year    Integer,
-    municipality    VARCHAR(127),
-    county VARCHAR(127),
-    Volume_count Integer,
-    road_name VARCHAR(255),
     station_ID Integer,
+    county VARCHAR(127),
     signing VARCHAR(127),
+    state_route VARCHAR(127),
+    county_road VARCHAR(127),
+    road_name VARCHAR(255),
     beginning_description TEXT,
     ending_description TEXT,
+    municipality    VARCHAR(127),
     length Integer,
     functional_class Integer,
     ramp VARCHAR(1),
     bridge VARCHAR(1),
     railroad_crossing VARCHAR(1),
     one_way VARCHAR(1),
-    PRIMARY KEY(year,road_name,station_ID)
+    Volume_count Integer
 );
+
+CREATE TABLE Location_volume
+(
+    year    Integer,
+    station_ID Integer,
+    county VARCHAR(127),
+    signing VARCHAR(127),
+    state_route VARCHAR(127),
+    county_road VARCHAR(127),
+    road_name VARCHAR(255),
+    beginning_description TEXT,
+    ending_description TEXT,
+    municipality    VARCHAR(127),
+    length Integer,
+    functional_class Integer,
+    ramp VARCHAR(1),
+    bridge VARCHAR(1),
+    railroad_crossing VARCHAR(1),
+    one_way VARCHAR(1),
+    Volume_count Integer,
+    PRIMARY KEY(station_ID,year)
+);
+
 CREATE TABLE Car_crash
 (
     year Integer,
