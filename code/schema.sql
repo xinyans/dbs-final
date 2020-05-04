@@ -19,7 +19,7 @@ CREATE TABLE Location_volume_temp
     bridge VARCHAR(1),
     railroad_crossing VARCHAR(1),
     one_way VARCHAR(1),
-    Volume_count Integer
+    volume_count Integer
 );
 
 CREATE TABLE Location_volume
@@ -40,7 +40,7 @@ CREATE TABLE Location_volume
     bridge VARCHAR(1),
     railroad_crossing VARCHAR(1),
     one_way VARCHAR(1),
-    Volume_count Integer,
+    volume_count Integer,
     PRIMARY KEY(station_ID,year)
 );
 
