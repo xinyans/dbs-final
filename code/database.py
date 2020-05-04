@@ -14,3 +14,15 @@ class Vehicles_data:
 		cursor.execute(query,(volume,))
 		records=cursor.fetchall()
 		return records
+	def listVolumnCrash(self):
+		cursor = self.conn.cursor()
+		query = """
+		SELECT Car_crash.municipality,Car_crash.year,
+		count(Car_crash.crash_descriptor) as crash_count,
+		FROM Location_volume NATURAL JOIN Car_crash
+		GROUP BY municipality,year
+		"""
+		cursor.execute(query)
+		records=cursor.fetchall()
+		return records
+
