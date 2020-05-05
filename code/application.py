@@ -65,7 +65,7 @@ if __name__ == "__main__":
     print(">\n> If you are supposed to be here, please type 'enter'.")
     print("> If you type anything else, we shall deny you access.")
     print(">", end =" ")
-    if input() != "enter":
+    if input() != "":
         print("> You did not type 'enter'.\nGoodbye!")
         exit()
 
