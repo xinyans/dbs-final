@@ -1,9 +1,9 @@
 DROP SCHEMA IF EXISTS project_data CASCADE;
 CREATE SCHEMA project_data;
-SET search_path TO project_data, public;
+ALTER ROLE dbms_project_user SET search_path TO project_data, public;
 
 -- Temporary table to hold the file, will be normalized later
-CREATE TABLE Location_volume_temp
+CREATE TABLE project_data.Location_volume_temp
 (
     year    Integer,
     station_ID Integer,
@@ -24,7 +24,7 @@ CREATE TABLE Location_volume_temp
     volume_count Integer
 );
 
-CREATE TABLE Volume
+CREATE TABLE project_data.Volume
 (
     year INT,
     station_ID INT,
@@ -32,7 +32,7 @@ CREATE TABLE Volume
     PRIMARY KEY (station_ID, year)
 );
 
-CREATE TABLE Roads
+CREATE TABLE project_data.Roads
 (
     station_ID Integer PRIMARY KEY,
     county VARCHAR(127),
@@ -51,7 +51,7 @@ CREATE TABLE Roads
     one_way VARCHAR(1)
 );
 
-CREATE TABLE Car_crash
+CREATE TABLE project_data.Car_crash
 (
     year Integer,
     crash_descriptor TEXT,
