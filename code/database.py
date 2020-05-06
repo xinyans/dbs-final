@@ -13,8 +13,9 @@ class Vehicles_data:
 
 		cursor = self.conn.cursor()
 		query = """
-		SELECT municipality,year FROM Location_volume 
-		GROUP BY municipality,year HAVING SUM(volume_count) >= %s
+		SELECT municipality,year FROM volume NATURAL JOIN roads 
+		WHERE municipality IS NOT NULL GROUP BY municipality, year 
+		HAVING SUM(volume_count) >= %s
 		"""
 		cursor.execute(query,(volume,))
 		records=cursor.fetchall()
@@ -26,28 +27,36 @@ class Vehicles_data:
 		users input ordered by the number_of_vehicles in descending order"""
 		cursor = self.conn.cursor()
 		query = """
-		SELECT Car_crash.municipality,Car_crash.year,
-		Car_crash.crash_descriptor
+		SELECT municipality, year,
+		crash_descriptor
 		FROM Car_crash
-		WHERE Car_crash.number_of_vehicles>=%s
-		ORDER BY Car_crash.number_of_vehicles desc
+		WHERE number_of_vehicles>=%s
+		ORDER BY number_of_vehicles desc
 		"""
-		cursor.execute(query,(vehicle_number))
+		cursor.execute(query,(vehicle_number,))
 		records=cursor.fetchall()
 		return records
 
 	def listVolumeCrash(self):
 		'''
-		Lists the number of crashes in a specific year and municipality.
+		Lists the number of crashes and total traffic in a specific year and municipality.
 		'''
 
 		cursor = self.conn.cursor()
 		query = """
-		SELECT Car_crash.municipality,Car_crash.year,
-		COUNT(Car_crash.crash_descriptor) as crash_count,
-		SUM(Location_volume.volume_count) as volume,
-		FROM Location_volume NATURAL JOIN Car_crash
-		GROUP BY Location_volume.municipality,Location_volume.year
+		SELECT traffic.municipality, traffic.year, crashes.crash_count, 
+		traffic.total_volume
+		FROM (
+			SELECT municipality, year, SUM(volume_count) as total_volume
+			FROM Volume NATURAL JOIN Roads GROUP BY year, municipality
+			HAVING SUM(volume_count) IS NOT NULL
+		) traffic JOIN (
+			SELECT municipality, year, COUNT(crash_descriptor) as crash_count
+			FROM Car_crash GROUP BY year, municipality
+		) crashes ON (
+			traffic.municipality ILIKE crashes.municipality 
+			AND traffic.year = crashes.year
+		)
 		"""
 		cursor.execute(query)
 		records=cursor.fetchall()
@@ -64,7 +73,7 @@ class Vehicles_data:
 				SELECT SUM(c.crash_sum) AS crash_total, SUM(c.volume_sum) AS volume_total, SUM(c.crash_sum)/SUM(c.volume_sum)*100 AS percentage, structure FROM
 					(SELECT a.municipality, a.county, structure, SUM(crash_count) AS crash_sum, SUM(a.vol) AS volume_sum FROM 
 						(SELECT year, municipality, county, %s AS structure, SUM(volume_count) AS vol FROM
-						Location_volume GROUP BY (year, municipality, county, %s)) a
+						Volume NATURAL JOIN Roads GROUP BY (year, municipality, county, %s)) a
 					JOIN
 						(SELECT year, municipality, county, COUNT(incident_date) AS crash_count FROM Car_crash GROUP BY (year, municipality, county)) b
 					ON a.year=b.year and LOWER(a.municipality)=LOWER(b.municipality) and LOWER(a.county)=LOWER(b.county)
@@ -87,13 +96,17 @@ class Vehicles_data:
 		query = """
 				SELECT a.year, a.vol, b.crash_count, CAST(b.crash_count AS FLOAT)/CAST(a.vol AS FLOAT)*100 AS percentage FROM 
 					(SELECT year, municipality, county, SUM(volume_count) AS vol FROM
-					Location_volume GROUP BY (year, municipality, county)) a
+					Volume NATURAL JOIN Roads GROUP BY (year, municipality, county)) a
 				JOIN
 					(SELECT year, municipality, county, COUNT(incident_date) AS crash_count FROM Car_crash GROUP BY (year, municipality, county)) b
 				ON a.year=b.year and LOWER(a.municipality)=LOWER(b.municipality) and LOWER(a.county)=LOWER(b.county)
-				WHERE a.municipality=%s and a.county=%s
+				WHERE a.municipality ILIKE %s and a.county ILIKE%s
 				GROUP BY (a.year, a.vol, b.crash_count);
 				"""
 		cursor.execute(query, (municipality_name, county_name))
 		records = cursor.fetchall()
 		return records
+
+# For testing
+v = Vehicles_data("host='localhost' dbname='dbms_final_project' user='dbms_project_user' password='dbms_password'")
+print(v.crashRateMunicipality('Troy', 'Rensselaer'))
