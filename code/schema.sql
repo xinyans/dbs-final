@@ -1,6 +1,8 @@
 DROP SCHEMA IF EXISTS project_data CASCADE;
 CREATE SCHEMA project_data;
+SET search_path TO project_data, public;
 
+-- Temporary table to hold the file, will be normalized later
 CREATE TABLE Location_volume_temp
 (
     year    Integer,
@@ -22,10 +24,17 @@ CREATE TABLE Location_volume_temp
     volume_count Integer
 );
 
-CREATE TABLE Location_volume
+CREATE TABLE Volume
 (
-    year    Integer,
-    station_ID Integer,
+    year INT,
+    station_ID INT,
+    volume_count INT,
+    PRIMARY KEY (station_ID, year)
+);
+
+CREATE TABLE Roads
+(
+    station_ID Integer PRIMARY KEY,
     county VARCHAR(127),
     signing VARCHAR(127),
     state_route VARCHAR(127),
@@ -39,9 +48,7 @@ CREATE TABLE Location_volume
     ramp VARCHAR(1),
     bridge VARCHAR(1),
     railroad_crossing VARCHAR(1),
-    one_way VARCHAR(1),
-    volume_count Integer,
-    PRIMARY KEY(station_ID,year)
+    one_way VARCHAR(1)
 );
 
 CREATE TABLE Car_crash
