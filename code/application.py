@@ -17,6 +17,7 @@ explore the database.
 
 def PRINT_POEM():
     '''Useless easter egg'''
+    print("> Congratulations! A poem for you by Robert Frost")
     print(
 '''> ___________________________________________
 > |   Stopping by Woods on a Snowy Evening  |
@@ -54,6 +55,18 @@ def PRINT_TEAM():
     for t in team:
         print(">     {}".format(t))
 
+def PRINT_HELP(command_line):
+    if len(command_line)==1:
+        print("> Here is a list of commands:")
+        for c in commands:
+            print(">    '{}'".format(c))
+        print("> {}".format(commands['help']))
+    else:
+        if command_line[1] in commands.keys():
+            print("> {}".format(commands[command_line[1]]))
+        else:
+            print("> '{}' is an unkownd command".format(command_line[1]))
+
 
 if __name__ == "__main__":
 
@@ -73,25 +86,40 @@ if __name__ == "__main__":
     print("> If you should find yourself lost, simply type 'help'. Also, feel free to visit")
     print("> our team's GitHub repo, at 'https://github.com/xinyans/dbs-final'\n>")
 
-    commands = ['help','exit','team']
+    commands = {'help': "Use 'help <command>' to view that command's description"}
+    commands['team'] = "Displays the team members"
+
+
+
 
 
     while(True):
         print(">", end =" ")
+
+        # accept input from user
         command = input()
 
-        if command == 'exit':
+        # tokenize input
+        command_line = command.split()
+
+        if len(command_line)==0: # no command given
+            continue
+
+        elif command_line[0] == 'exit':
             print("> Farewell! May the the road rise to meet you!")
             break
-        elif command == 'Easter Egg':
-            print("> Congratulations! A poem for you by Robert Frost")
+
+        elif command_line[0] == 'egg':
             PRINT_POEM()
-        elif command == 'help':
-            print("> Here is a list of commands:")
-            for c in commands:
-                print(">    '{}'".format(c))
-        elif command == 'team':
+        
+        elif command_line[0] == 'help':
+            PRINT_HELP(command_line)
+
+        elif command_line[0] == 'team':
             PRINT_TEAM()
+
+        else:
+            print("> '{}' is an unknown command".format(command_line[0]))
 
 
 
