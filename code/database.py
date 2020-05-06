@@ -68,20 +68,23 @@ class Vehicles_data:
 	# 					12			100				12			Y
 	# 					35			500				7			null
 	def structureCrashRelation(self, structure_name):
+		if structure_name not in ['ramp', 'bridge', 'railroad crossing', 'one-way']:
+			print("Illegal input!")
+			return
 		cursor = self.conn.cursor()
 		query = """
 				SELECT SUM(c.crash_sum) AS crash_total, SUM(c.volume_sum) AS volume_total, SUM(c.crash_sum)/SUM(c.volume_sum)*100 AS percentage, structure FROM
 					(SELECT a.municipality, a.county, structure, SUM(crash_count) AS crash_sum, SUM(a.vol) AS volume_sum FROM 
-						(SELECT year, municipality, county, %s AS structure, SUM(volume_count) AS vol FROM
-						Volume NATURAL JOIN Roads GROUP BY (year, municipality, county, %s)) a
+						(SELECT year, municipality, county, {} AS structure, SUM(volume_count) AS vol FROM
+						Volume NATURAL JOIN Roads GROUP BY (year, municipality, county, {})) a
 					JOIN
 						(SELECT year, municipality, county, COUNT(incident_date) AS crash_count FROM Car_crash GROUP BY (year, municipality, county)) b
 					ON a.year=b.year and LOWER(a.municipality)=LOWER(b.municipality) and LOWER(a.county)=LOWER(b.county)
 					WHERE vol IS NOT NULL
 					GROUP BY (a.year, a.municipality, a.county, structure)) c
 				GROUP BY structure;
-				"""
-		cursor.execute(query, (structure_name, structure_name,))
+				""".format(structure_name, structure_name)
+		cursor.execute(query)
 		records = cursor.fetchall()
 		return records
 
