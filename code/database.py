@@ -20,7 +20,22 @@ class Vehicles_data:
 		records=cursor.fetchall()
 		return records
 
-		
+	def vehicleAndCarCrash(self,vehicle_number):
+		"""list the municipality,year and crash_descriptor of the car crashes 
+		that have the number_of_vehicles involved equals or more than the number 
+		users input ordered by the number_of_vehicles in descending order"""
+		cursor = self.conn.cursor()
+		query = """
+		SELECT Car_crash.municipality,Car_crash.year,
+		Car_crash.crash_descriptor
+		FROM Car_crash
+		WHERE Car_crash.number_of_vehicles>=%s
+		ORDER BY Car_crash.number_of_vehicles desc
+		"""
+		cursor.execute(query,(vehicle_number))
+		records=cursor.fetchall()
+		return records
+
 	def listVolumeCrash(self):
 		'''
 		Lists the number of crashes in a specific year and municipality.
@@ -29,10 +44,10 @@ class Vehicles_data:
 		cursor = self.conn.cursor()
 		query = """
 		SELECT Car_crash.municipality,Car_crash.year,
-		count(Car_crash.crash_descriptor) as crash_count,
-		SUM(Location_volumn.volume_count) as volume,
+		COUNT(Car_crash.crash_descriptor) as crash_count,
+		SUM(Location_volume.volume_count) as volume,
 		FROM Location_volume NATURAL JOIN Car_crash
-		GROUP BY municipality,year
+		GROUP BY Location_volume.municipality,Location_volume.year
 		"""
 		cursor.execute(query)
 		records=cursor.fetchall()
@@ -82,7 +97,3 @@ class Vehicles_data:
 		cursor.execute(query, (municipality_name, county_name))
 		records = cursor.fetchall()
 		return records
-
-
-
-
