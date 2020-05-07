@@ -199,7 +199,7 @@ def MAKE_COMMANDS():
                     "> that have the number_of_vehicles involved >= num.\n"\
                     "> Call with 'crashes <num>'"
     commands['structure'] = "Returns the crash statistics involving accidents with a specific structure.\n"\
-                            "> Call with 'structure <arg>' where arg = ramp, bridge, railroad crossing, or one-way."
+                            "> Call with 'structure <arg>' where arg = ramp, bridge, railroad_crossing, or one_way."
     
     return commands
 
