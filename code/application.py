@@ -127,7 +127,7 @@ def RUN_STRUCTURE(database, command_line):
     '''Runs structureCrashRelation'''
     if len(command_line) < 2 or len(command_line)> 3:
         print("> incorrect number of arguments.\n> Call with 'structure <arg>'\n"\
-                "> Note: arg = ramp, bridge, railroad crossing, or one-way")
+                "> Note: arg = ramp, bridge, railroad_crossing, or one_way")
         return
 
     #TODO: make sure this returns correctly with proper formatting
