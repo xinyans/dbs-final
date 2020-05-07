@@ -79,7 +79,8 @@ def RUN_HELP(command_line):
 def RUN_CRASH_RATE(database, command_line):
     '''Runs the crashRateMunicipality query with proper output formating'''
     if len(command_line) != 3:
-        print("> incorrect number of arguments.\n> Call with 'crash_rate <municipality> <county>'")
+        print("> incorrect number of arguments.\n"
+                "> Call with 'crash_rate <municipality> <county>'")
     else:
         #TODO: make sure records is in the proper structure and can be retrieved
         records = database.crashRateMunicipality(command_line[1], command_line[2])
@@ -113,7 +114,8 @@ def RUN_CRASHES(database, command_line):
 def RUN_STRUCTURE(database, command_line):
     '''Runs structureCrashRelation'''
     if len(command_line) < 2 or len(command_line)> 3:
-        print("> incorrect number of arguments.\n> Call with 'structure <arg>'\n> Note: arg = ramp, bridge, railroad crossing, or one-way")
+        print("> incorrect number of arguments.\n> Call with 'structure <arg>'\n"\
+                "> Note: arg = ramp, bridge, railroad crossing, or one-way")
         return
 
     #TODO: make sure this returns correctly with proper formatting
@@ -138,8 +140,8 @@ def RUN_STRUCTURE(database, command_line):
         print("> IMPROPER RETURN VALUE!!!")
         return
 
-    # percent_with = records[0][2]
-    # percent_wout = records[1][2]
+    percent_with = records[0][2]
+    percent_wout = records[1][2]
     
     print("> Percentage of crashes involving '{}' was {:.2f}".format(s, percent_with))
     print("> Percentage of crashes not involving '{}' was {:.2f}".format(s, percent_wout))
@@ -177,9 +179,10 @@ if __name__ == "__main__":
 
     commands = MAKE_COMMANDS()
 
+    database=2
+
     #TODO: UNCOMMENT THIS
     # connection_string = "host='localhost' dbname='dbs-final' user='dbs-final_user' password='dbs_password'"
-
     # database = Vehicles_data(connection_string)
 
     while(True):
@@ -230,7 +233,6 @@ if __name__ == "__main__":
         elif command_line[0] == 'structure':
             #TODO finalize RUN_CRASHES
             # print("> This feature is not implemented yet...")
-            # database=2
             RUN_STRUCTURE(database, command_line)
 
 
