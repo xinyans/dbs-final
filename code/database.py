@@ -70,7 +70,7 @@ class Vehicles_data:
 	# 					35			500				7			null
 	def structureCrashRelation(self, structure_name):
 		if structure_name not in ['ramp', 'bridge', 'railroad crossing', 'one-way']:
-			print("Illegal input!")
+			# print("Illegal input!")
 			return
 		cursor = self.conn.cursor()
 		query = """
