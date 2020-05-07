@@ -69,8 +69,8 @@ class Vehicles_data:
 	# 					35			500				7			null
 	def structureCrashRelation(self, structure_name):
 		if structure_name not in ['ramp', 'bridge', 'railroad crossing', 'one_way']:
-			print("Illegal input!")
-			return
+			# print("Illegal input!")
+			return None
 		cursor = self.conn.cursor()
 		query = """
 				SELECT SUM(c.crash_sum) AS crash_total, SUM(c.volume_sum) AS volume_total, SUM(c.crash_sum)/SUM(c.volume_sum)*100 AS percentage, structure FROM
