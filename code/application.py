@@ -15,7 +15,7 @@ The UI will be a basic Command Line Interface giving users the ability to
 explore the database.
 '''
 
-
+#TODO: UNCOMMENT THIS
 # from database import Vehicles_data
 
 
@@ -64,16 +64,17 @@ def RUN_HELP(command_line):
     '''Runs the help function with proper formating'''
     if len(command_line)==1:
         print("> Here is a list of commands:")
-        for c in commands:
+        for c in sorted(commands.keys()):
             print(">    '{}'".format(c))
-        print("> {}".format(commands['help']))
+        print("> Use 'help <command>' to view that command's description")
     else:
         print(">")
         if command_line[1] in commands.keys():
             print("> {}".format(command_line[1]))
             print("> {}".format(commands[command_line[1]]))
         else:
-            print("> '{}' is an unkownd command".format(command_line[1]))
+            print("> '{}' is an unknown command".format(command_line[1]))
+    print(">")
 
 def RUN_CRASH_RATE(database, command_line):
     '''Runs the crashRateMunicipality query with proper output formating'''
@@ -113,32 +114,42 @@ def RUN_STRUCTURE(database, command_line):
     '''Runs structureCrashRelation'''
     if len(command_line) < 2 or len(command_line)> 3:
         print("> incorrect number of arguments.\n> Call with 'structure <arg>'\n> Note: arg = ramp, bridge, railroad crossing, or one-way")
+        return
+
+    #TODO: make sure this returns correctly with proper formatting
+
+    if len(command_line) == 3:
+        s = command_line[1] + ' ' + command_line[2]
     else:
-        #TODO: make sure this returns correctly with proper formatting
+        s = command_line[1]
+    
+    records = database.structureCrashRelation(s)
 
-        if len(command_line) == 3:
-            s = command_line[1] + ' ' + command_line[2]
-        else:
-            s = command_line[1]
-        
-        # records = database.structureCrashRelation(s)
+    # records = []
+    # records.append( (319865,10391742,3.01298749320,'Y') )
+    # records.append( (967865,74965742,12.01298749320,None) )
+
+    if records == None:
+        print("> Invalid structure was supplied")
+    # here is assuming that the call has succeeded
 
 
-if __name__ == "__main__":
+    if len(records) != 2:
+        print("> IMPROPER RETURN VALUE!!!")
+        return
+
+    # percent_with = records[0][2]
+    # percent_wout = records[1][2]
+    
+    print("> Percentage of crashes involving '{}' was {:.2f}".format(s, percent_with))
+    print("> Percentage of crashes not involving '{}' was {:.2f}".format(s, percent_wout))
 
 
-    # connection_string = "host='localhost' dbname='dbs-final' user='dbs-final_user' password='dbs_password'"
 
-    # database = Vehicles_data(connection_string)
 
-    print("> Database Systems Final Project\n> Instructor: Samuel Johnson")
-    RUN_TEAM()
-
-    print(">\n> Welcome, traveller, to the Command Line Interface of a Database Systems final project")
-    print("> If you should find yourself lost, simply type 'help'. Also, feel free to visit")
-    print("> our team's GitHub repo, at 'https://github.com/xinyans/dbs-final'\n>")
-
-    commands = {'help': "Use 'help <command>' to view that command's description"}
+def MAKE_COMMANDS():
+    '''makes the dict of commands, and their description'''
+    commands = {}
     commands['team'] = "Displays the team members"
     commands['crash_rate'] = "Return Crashes, Volume and crash rate of every year.\n" \
                             "> Call with 'crash_rate <municipality> <county>'"
@@ -150,8 +161,26 @@ if __name__ == "__main__":
                     "> Call with 'crashes <num>'"
     commands['structure'] = "Returns the crash statistics involving accidents with a specific structure.\n"\
                             "> Call with 'structure <arg>' where arg = ramp, bridge, railroad crossing, or one-way."
+    
+    return commands
+
+if __name__ == "__main__":
 
 
+
+    print("> Database Systems Final Project\n> Instructor: Samuel Johnson")
+    RUN_TEAM()
+
+    print(">\n> Welcome, traveller, to the Command Line Interface of a Database Systems final project")
+    print("> If you should find yourself lost, simply type 'help'. Also, feel free to visit")
+    print("> our team's GitHub repo, at 'https://github.com/xinyans/dbs-final'\n>")
+
+    commands = MAKE_COMMANDS()
+
+    #TODO: UNCOMMENT THIS
+    # connection_string = "host='localhost' dbname='dbs-final' user='dbs-final_user' password='dbs_password'"
+
+    # database = Vehicles_data(connection_string)
 
     while(True):
         print(">", end =" ")
@@ -200,8 +229,8 @@ if __name__ == "__main__":
         
         elif command_line[0] == 'structure':
             #TODO finalize RUN_CRASHES
-            print("> This feature is not implemented yet...")
-            database = 2
+            # print("> This feature is not implemented yet...")
+            # database=2
             RUN_STRUCTURE(database, command_line)
 
 
