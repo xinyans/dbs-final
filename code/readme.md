@@ -22,3 +22,6 @@ The datasets that we use are Annual Average Daily Traffic in different municipal
 ## Other files
 The main querying component is in `database.py` and is used by `application.py` to get the result with user inputs.
 `datasets.txt` contains the link to download the datasets, `schema.sql` contains the schemas used in this application, and `requirements.py` contains the prerequisites for this application.
+
+## Links
+Link to github repo: https://github.com/xinyans/dbs-final
