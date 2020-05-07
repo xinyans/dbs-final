@@ -12,7 +12,6 @@ The UI will be a basic Command Line Interface giving users the ability to
 explore the database.
 '''
 
-#TODO: UNCOMMENT THIS
 from database import Vehicles_data
 
 
@@ -81,10 +80,7 @@ def RUN_GET_MUNICIPALITY(database,command_line):
         print("> incorrect number of arguments.\n> Call with 'get_municipality <vol>'")
         return
 
-    #TODO: make sure this returns correctly with proper formatting
     records = database.listTrafficVolume(command_line[1])
-
-    # is records of the format [(municipality, year), (municipality, year), ...]?
 
     print("> Municipalities and years that had traffic volume greater than {}".format(command_line[1]))
     for i in records:
@@ -97,7 +93,6 @@ def RUN_CRASHES(database, command_line):
         print("> incorrect number of arguments.\n> Call with 'crashes <num>'")
         return
 
-    #TODO: make sure this returns correctly with proper formatting
     records = database.vehicleAndCarCrash(command_line[1])
 
     # Assuming records = [ (municipality, year, description), ... ]
@@ -112,7 +107,6 @@ def RUN_GET_VOLUME(database, command_line):
         print("> incorrect number of arguments.\n> Call with 'get_volume' only")
         return
 
-    #TODO: make sure this returns correctly with proper formatting
     records = database.listVolumeCrash()
 
     # Assuming structure [ (Municipality,yeah,total_creashes,traffic_vol), ... ]
@@ -130,18 +124,12 @@ def RUN_STRUCTURE(database, command_line):
                 "> Note: arg = ramp, bridge, railroad_crossing, or one_way")
         return
 
-    #TODO: make sure this returns correctly with proper formatting
-
     if len(command_line) == 3:
         s = command_line[1] + ' ' + command_line[2]
     else:
         s = command_line[1]
     
     records = database.structureCrashRelation(s)
-
-    # records = []
-    # records.append( (319865,10391742,3.01298749320,'Y') )
-    # records.append( (967865,74965742,12.01298749320,None) )
 
     if records == None:
         print("> Invalid structure was supplied")
@@ -157,9 +145,6 @@ def RUN_STRUCTURE(database, command_line):
     
     print("> Percentage of crashes involving '{}' was {:.2f}".format(s, percent_with))
 
-    #this stat is not clear and will cause confusion
-    # print("> Percentage of crashes not involving '{}' was {:.2f}".format(s, percent_wout))
-
 
 
 def RUN_CRASH_RATE(database, command_line):
@@ -172,17 +157,12 @@ def RUN_CRASH_RATE(database, command_line):
                 "> Call with 'crash_rate <municipality> <county>'")
         return
 
-    #TODO: make sure records is in the proper structure and can be retrieved
     records = database.crashRateMunicipality(command_line[1], command_line[2])
     if records == None:
         print("> Invalid municipality and county was supplied")
     print("> statistics for {},{} in each year".format(command_line[1],command_line[2]));
     for i in records:
         print("> {} crashes and {} total traffic with {} percent crash rate in {}".format(i[2],i[1],i[3],i[0]))
-
-
-
-
 
 
 
@@ -203,6 +183,8 @@ def MAKE_COMMANDS():
     
     return commands
 
+
+
 if __name__ == "__main__":
 
 
@@ -216,7 +198,6 @@ if __name__ == "__main__":
 
     commands = MAKE_COMMANDS()
 
-    #TODO: UNCOMMENT THIS
     connection_string = "host='localhost' dbname='dbms_final_project' user='dbms_project_user' password='dbms_password'"
     database = Vehicles_data(connection_string)
 
@@ -246,29 +227,19 @@ if __name__ == "__main__":
             RUN_TEAM()
 
         elif command_line[0] == 'crash_rate':
-            #TODO: finalize RUN_CRASH_RATE
-            #print("> This feature is not implemented yet...")
             RUN_CRASH_RATE(database, command_line)
 
         elif command_line[0] == 'get_volume':
-            #TODO finalize RUN_GET_VOLME
-            #print("> This feature is not implemented yet...")
             RUN_GET_VOLUME(database, command_line)
 
         elif command_line[0] == 'get_municipality':
-            #TODO finalize RUN_GET_MUNICIPALITY
-            #print("> This feature is not implemented yet...")
             RUN_GET_MUNICIPALITY(database, command_line)
 
         elif command_line[0] == 'crashes':
-            #TODO finalize RUN_CRASHES
-            #print("> This feature is not implemented yet...")
             RUN_CRASHES(database, command_line)
         
         elif command_line[0] == 'structure':
             RUN_STRUCTURE(database, command_line)
-
-
 
         else:
             print("> '{}' is an unknown command".format(command_line[0]))
