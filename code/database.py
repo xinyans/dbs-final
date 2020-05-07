@@ -63,13 +63,13 @@ class Vehicles_data:
 		records=cursor.fetchall()
 		return records
 
-	# User selects from the following: ramp, bridge, railroad crossing, and one-way. Any other input is not allowed.
+	# User selects from the following: ramp, bridge, railroad_crossing, and one_way. Any other input is not allowed.
 	# Function returns how these affect crash rate
 	# Return structure:	crash_total	volume_total	percentage	has_structure
 	# 					12			100				12			Y
 	# 					35			500				7			null
 	def structureCrashRelation(self, structure_name):
-		if structure_name not in ['ramp', 'bridge', 'railroad crossing', 'one-way']:
+		if structure_name not in ['ramp', 'bridge', 'railroad_crossing', 'one_way']:
 			# print("Illegal input!")
 			return
 		cursor = self.conn.cursor()
