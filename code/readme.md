@@ -24,4 +24,5 @@ The main querying component is in `database.py` and is used by `application.py` 
 `datasets.txt` contains the link to download the datasets, `schema.sql` contains the schemas used in this application, and `requirements.py` contains the prerequisites for this application.
 
 ## Links
+Link to video presentation: https://drive.google.com/open?id=1zg8NUWJhUwwd1DMurlSsZoM7KN7u52_1
 Link to github repo: https://github.com/xinyans/dbs-final
