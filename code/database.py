@@ -57,20 +57,21 @@ class Vehicles_data:
 			traffic.municipality ILIKE crashes.municipality 
 			AND traffic.year = crashes.year
 		)
+		where crashes.crash_count>100
 		"""
 		cursor.execute(query)
 		records=cursor.fetchall()
 		return records
 
-	# User selects from the following: ramp, bridge, railroad crossing, and one_way. Any other input is not allowed.
+	# User selects from the following: ramp, bridge, railroad crossing, and one-way. Any other input is not allowed.
 	# Function returns how these affect crash rate
 	# Return structure:	crash_total	volume_total	percentage	has_structure
 	# 					12			100				12			Y
 	# 					35			500				7			null
 	def structureCrashRelation(self, structure_name):
-		if structure_name not in ['ramp', 'bridge', 'railroad crossing', 'one_way']:
-			# print("Illegal input!")
-			return None
+		if structure_name not in ['ramp', 'bridge', 'railroad crossing', 'one-way']:
+			print("Illegal input!")
+			return
 		cursor = self.conn.cursor()
 		query = """
 				SELECT SUM(c.crash_sum) AS crash_total, SUM(c.volume_sum) AS volume_total, SUM(c.crash_sum)/SUM(c.volume_sum)*100 AS percentage, structure FROM
@@ -109,7 +110,3 @@ class Vehicles_data:
 		cursor.execute(query, (municipality_name, county_name))
 		records = cursor.fetchall()
 		return records
-
-# For testing
-v = Vehicles_data("host='localhost' dbname='dbms_final_project' user='dbms_project_user' password='dbms_password'")
-print(v.structureCrashRelation('one_way'))

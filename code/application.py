@@ -117,7 +117,7 @@ def RUN_GET_VOLUME(database, command_line):
 
     # Assuming structure [ (Municipality,yeah,total_creashes,traffic_vol), ... ]
 
-    print("> Crashes and traffic of a municipality")
+    print("> Crashes and traffic of a municipality with more than 100 crashes")
     for i in records:
         print("> {} crashes and {} total traffic for {} in {}".format(i[2],i[3],i[0],i[1]))
     
@@ -192,7 +192,7 @@ def MAKE_COMMANDS():
     commands['team'] = "Displays the team members"
     commands['crash_rate'] = "Return Crashes, Volume and crash rate of every year.\n" \
                             "> Call with 'crash_rate <municipality> <county>'"
-    commands['get_volume'] = "Lists the number of crashes and total traffic in a specific year and municipality."
+    commands['get_volume'] = "Lists the number of crashes and total traffic in a specific year and municipality with more than 100 crashes."
     commands['get_municipality'] = "Returns municipalities and year whose traffic volume is greater than vol.\n"\
                                     "> Call with 'get_municipality <vol>'"
     commands['crashes'] = "Lists the municipality,year and crash_descriptor of the car crashes\n"\
