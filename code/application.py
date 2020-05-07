@@ -217,7 +217,7 @@ if __name__ == "__main__":
     commands = MAKE_COMMANDS()
 
     #TODO: UNCOMMENT THIS
-    connection_string = "host='localhost' dbname='dbms_final_project' user='dbms_project_user' password='dbms_password' port='5433'"
+    connection_string = "host='localhost' dbname='dbms_final_project' user='dbms_project_user' password='dbms_password'"
     database = Vehicles_data(connection_string)
 
     while(True):
