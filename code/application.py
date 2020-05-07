@@ -76,40 +76,54 @@ def RUN_HELP(command_line):
             print("> '{}' is an unknown command".format(command_line[1]))
     print(">")
 
-def RUN_CRASH_RATE(database, command_line):
-    '''Runs the crashRateMunicipality query with proper output formating'''
-    if len(command_line) != 3:
-        print("> incorrect number of arguments.\n"
-                "> Call with 'crash_rate <municipality> <county>'")
-    else:
-        #TODO: make sure records is in the proper structure and can be retrieved
-        records = database.crashRateMunicipality(command_line[1], command_line[2])
-
     
-    
-def RUN_GET_VOLUME(database, command_line):
-    '''Runs the listVolumeCrash query'''
-    if len(command_line) != 1:
-        print("> incorrect number of arguments.\n> Call with 'get_volume' only")
-    else:
-        #TODO: make sure this returns correctly with proper formatting
-        records = database.listVolumeCrash()
 
 def RUN_GET_MUNICIPALITY(database,command_line):
     '''Runs listTrafficVolume query'''
     if len(command_line) != 2:
         print("> incorrect number of arguments.\n> Call with 'get_municipality <vol>'")
-    else:
-        #TODO: make sure this returns correctly with proper formatting
-        records = database.listVolumeCrash(command_line[1])
+        return
+
+    #TODO: make sure this returns correctly with proper formatting
+    records = database.listVolumeCrash(command_line[1])
+
+    # is records of the format [(municipality, year), (municipality, year), ...]?
+
+    print("> Municipalities and years that had traffic volume greater than {}".format(command_line[1]))
+    for i in records:
+        print("> {} in year {}".format(i[0],i[1]))
+
 
 def RUN_CRASHES(database, command_line):
     '''Runs vehicleAndCarCrash'''
     if len(command_line) != 2:
         print("> incorrect number of arguments.\n> Call with 'crashes <num>'")
-    else:
-        #TODO: make sure this returns correctly with proper formatting
-        records = database.vehicleAndCarCrash(command_line[1])
+        return
+
+    #TODO: make sure this returns correctly with proper formatting
+    records = database.vehicleAndCarCrash(command_line[1])
+
+    # Assuming records = [ (municipality, year, description), ... ]
+
+    print("> All crashes with more than {} vehicle's involved".format(command_line[1]))
+    for i in records:
+        print("> {}, {}\n>     Crash descriptor = {}".format(i[0],i[1],i[2]))
+
+def RUN_GET_VOLUME(database, command_line):
+    '''Runs the listVolumeCrash query'''
+    if len(command_line) != 1:
+        print("> incorrect number of arguments.\n> Call with 'get_volume' only")
+
+    #TODO: make sure this returns correctly with proper formatting
+    records = database.listVolumeCrash()
+
+    # Assuming structure [ (Municipality,yeah,total_creashes,traffic_vol), ... ]
+
+    print("> Crashes and traffic of a municipality")
+    for i in records:
+        print("> {} crashes and {} total traffic for {} in {}".format(i[2],i[3],i[0],i[1]))
+    
+
 
 def RUN_STRUCTURE(database, command_line):
     '''Runs structureCrashRelation'''
@@ -144,8 +158,30 @@ def RUN_STRUCTURE(database, command_line):
     percent_wout = records[1][2]
     
     print("> Percentage of crashes involving '{}' was {:.2f}".format(s, percent_with))
-    print("> Percentage of crashes not involving '{}' was {:.2f}".format(s, percent_wout))
 
+    #this stat is not clear and will cause confusion
+    # print("> Percentage of crashes not involving '{}' was {:.2f}".format(s, percent_wout))
+
+
+
+def RUN_CRASH_RATE(database, command_line):
+    '''Runs the crashRateMunicipality query with proper output formating'''
+
+    # how do we make sure that a county is 1 word? same for rmunicipality
+
+    if len(command_line) != 3:
+        print("> incorrect number of arguments.\n"
+                "> Call with 'crash_rate <municipality> <county>'")
+        return
+
+    #TODO: make sure records is in the proper structure and can be retrieved
+    records = database.crashRateMunicipality(command_line[1], command_line[2])
+
+
+
+
+
+    print("> Statistics for ")
 
 
 
@@ -231,8 +267,6 @@ if __name__ == "__main__":
             # RUN_CRASHES(database, command_line)
         
         elif command_line[0] == 'structure':
-            #TODO finalize RUN_CRASHES
-            # print("> This feature is not implemented yet...")
             RUN_STRUCTURE(database, command_line)
 
 
