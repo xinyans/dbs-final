@@ -1,6 +1,5 @@
 '''
 Database Systems Final Project
-
 Instructor: Samuel Johnson
 Group Members:
     Xinyan Sun (sunx15) - sunx15@rpi.edu
@@ -8,15 +7,13 @@ Group Members:
     Yutao Yang (yangy27) - yangy27@rpi.edu
     Brian Gembarski (gembab) - gembab@rpi.edu
     Abdulai Jalloh (jalloa) - jalloa@rpi.edu
-
 This python file is responsible is responsible for handling the UI.
-
 The UI will be a basic Command Line Interface giving users the ability to 
 explore the database.
 '''
 
 #TODO: UNCOMMENT THIS
-# from database import Vehicles_data
+from database import Vehicles_data
 
 
 def PRINT_POEM():
@@ -85,7 +82,7 @@ def RUN_GET_MUNICIPALITY(database,command_line):
         return
 
     #TODO: make sure this returns correctly with proper formatting
-    records = database.listVolumeCrash(command_line[1])
+    records = database.listTrafficVolume(command_line[1])
 
     # is records of the format [(municipality, year), (municipality, year), ...]?
 
@@ -113,6 +110,7 @@ def RUN_GET_VOLUME(database, command_line):
     '''Runs the listVolumeCrash query'''
     if len(command_line) != 1:
         print("> incorrect number of arguments.\n> Call with 'get_volume' only")
+        return
 
     #TODO: make sure this returns correctly with proper formatting
     records = database.listVolumeCrash()
@@ -176,12 +174,15 @@ def RUN_CRASH_RATE(database, command_line):
 
     #TODO: make sure records is in the proper structure and can be retrieved
     records = database.crashRateMunicipality(command_line[1], command_line[2])
+    if records == None:
+        print("> Invalid municipality and county was supplied")
+    print("> statistics for {},{} in each year".format(command_line[1],command_line[2]));
+    for i in records:
+        print("> {} crashes and {} total traffic with {} percent crash rate in {}".format(i[2],i[1],i[3],i[0]))
 
 
 
 
-
-    print("> Statistics for ")
 
 
 
@@ -195,7 +196,7 @@ def MAKE_COMMANDS():
     commands['get_municipality'] = "Returns municipalities and year whose traffic volume is greater than vol.\n"\
                                     "> Call with 'get_municipality <vol>'"
     commands['crashes'] = "Lists the municipality,year and crash_descriptor of the car crashes\n"\
-        		    "> that have the number_of_vehicles involved >= num.\n"\
+                    "> that have the number_of_vehicles involved >= num.\n"\
                     "> Call with 'crashes <num>'"
     commands['structure'] = "Returns the crash statistics involving accidents with a specific structure.\n"\
                             "> Call with 'structure <arg>' where arg = ramp, bridge, railroad crossing, or one-way."
@@ -215,11 +216,9 @@ if __name__ == "__main__":
 
     commands = MAKE_COMMANDS()
 
-    database=2
-
     #TODO: UNCOMMENT THIS
-    # connection_string = "host='localhost' dbname='dbs-final' user='dbs-final_user' password='dbs_password'"
-    # database = Vehicles_data(connection_string)
+    connection_string = "host='localhost' dbname='dbms_final_project' user='dbms_project_user' password='dbms_password' port='5433'"
+    database = Vehicles_data(connection_string)
 
     while(True):
         print(">", end =" ")
@@ -248,23 +247,23 @@ if __name__ == "__main__":
 
         elif command_line[0] == 'crash_rate':
             #TODO: finalize RUN_CRASH_RATE
-            print("> This feature is not implemented yet...")
-            # RUN_CRASH_RATE(database, command_line)
+            #print("> This feature is not implemented yet...")
+            RUN_CRASH_RATE(database, command_line)
 
         elif command_line[0] == 'get_volume':
             #TODO finalize RUN_GET_VOLME
-            print("> This feature is not implemented yet...")
-            # RUN_GET_VOLUME(database, command_line)
+            #print("> This feature is not implemented yet...")
+            RUN_GET_VOLUME(database, command_line)
 
         elif command_line[0] == 'get_municipality':
             #TODO finalize RUN_GET_MUNICIPALITY
-            print("> This feature is not implemented yet...")
-            # RUN_GET_MUNICIPALITY(database, command_line)
+            #print("> This feature is not implemented yet...")
+            RUN_GET_MUNICIPALITY(database, command_line)
 
         elif command_line[0] == 'crashes':
             #TODO finalize RUN_CRASHES
-            print("> This feature is not implemented yet...")
-            # RUN_CRASHES(database, command_line)
+            #print("> This feature is not implemented yet...")
+            RUN_CRASHES(database, command_line)
         
         elif command_line[0] == 'structure':
             RUN_STRUCTURE(database, command_line)
@@ -273,7 +272,3 @@ if __name__ == "__main__":
 
         else:
             print("> '{}' is an unknown command".format(command_line[0]))
-
-
-
-    
